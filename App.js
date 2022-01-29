@@ -17,13 +17,25 @@ export default function App() {
 
   return (
     <NavigationContainer>
+      <StatusBar
+        //barStyle="dark-content"
+        // hidden={false}     
+        translucent={false}
+        backgroundColor='white'
+      />
       <Stack.Navigator>
         {user ? <>
           <Stack.Screen name='Home' component={Home} />
           <Stack.Screen name='Create' component={Create} />
           <Stack.Screen name='Update' component={Update} />
         </> : <>
-          <Stack.Screen name='Login' component={Login} />
+          <Stack.Screen
+            name='Login'
+            component={Login}
+            options={{
+              headerShown: false
+            }}
+          />
           <Stack.Screen name='Register' component={Register} />
 
         </>}
