@@ -11,7 +11,7 @@ import {
 import React, { useState } from "react";
 import Button from "../components/Button";
 
-export default function Login() {
+export default function Login({ navigation }) {
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
   const [secureTextEntry, setSecureTextEntry] = useState(true);
@@ -33,8 +33,9 @@ export default function Login() {
         <View style={styles.container3}>
           <TextInput
             onChangeText={text => setEmail(text)}
-            placeholder="Email"
+            placeholder="Email Address"
             style={styles.inputStyle}
+            autoCapitalize="none"
           />
           <TextInput
             onChangeText={text => setPassword(text)}
@@ -58,10 +59,16 @@ export default function Login() {
           justifyContent: "flex-end",
           marginBottom: 20,
           alignItems: "center",
+          // backgroundColor: "red",
         }}
       >
-        <TouchableOpacity activeOpacity={0.8}>
-          <Text>
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={() => {
+            navigation.navigate("Register");
+          }}
+        >
+          <Text style={{ fontSize: 17, fontWeight: "bold" }}>
             Don't have an account <Text style={styles.signUp}>Sign up</Text>
           </Text>
         </TouchableOpacity>
@@ -77,7 +84,7 @@ const styles = StyleSheet.create({
   },
   loginImage: {
     width: "100%",
-    height: 270,
+    height: 250,
     borderRadius: 10,
   },
   container1: {
