@@ -39,7 +39,13 @@ export default function App() {
       <Stack.Navigator>
         {user ? (
           <>
-            <Stack.Screen name="Home" component={Home} />
+            <Stack.Screen
+              name="Home"
+              component={Home}
+              options={{
+                headerShown: false,
+              }}
+            />
             <Stack.Screen name="Create" component={Create} />
             <Stack.Screen name="Update" component={Update} />
           </>
@@ -52,7 +58,13 @@ export default function App() {
                 headerShown: false,
               }}
             />
-            <Stack.Screen name="Register" component={Register} />
+            <Stack.Screen
+              name="Register"
+              component={Register}
+              options={{
+                headerShown: false,
+              }}
+            />
           </>
         )}
       </Stack.Navigator>

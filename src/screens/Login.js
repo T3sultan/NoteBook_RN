@@ -34,7 +34,6 @@ export default function Login({ navigation }) {
       .then(res => {
         console.log(res);
         setLoading(false);
-        navigation.navigate("Home");
       })
       .catch(error => {
         console.log("error", error);
