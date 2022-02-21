@@ -66,13 +66,18 @@ export default function Login({ navigation }) {
             secureTextEntry={secureTextEntry}
           />
         </View>
+        {loading ? (
+          <ActivityIndicator />
+        ) : (
+          <View style={styles.buttonStyle}>
+            <Button
+              onPress={loginFunction}
+              backgroundColor="blue"
+              title="Login"
+            />
+          </View>
+        )}
       </View>
-
-      {loading ? (
-        <ActivityIndicator />
-      ) : (
-        <Button onPress={loginFunction} backgroundColor="blue" title="Login" />
-      )}
 
       <View
         style={{

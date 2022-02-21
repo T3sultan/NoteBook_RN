@@ -101,17 +101,18 @@ export default function Register({ navigation }) {
             secureTextEntry={secureTextEntry}
           />
         </View>
+        {loading ? (
+          <ActivityIndicator />
+        ) : (
+          <View style={styles.buttonStyle}>
+            <Button
+              onPress={signUpFunction}
+              title="Sign up"
+              backgroundColor="blue"
+            />
+          </View>
+        )}
       </View>
-
-      {loading ? (
-        <ActivityIndicator />
-      ) : (
-        <Button
-          onPress={signUpFunction}
-          title="Sign up"
-          backgroundColor="blue"
-        />
-      )}
 
       <View style={styles.signupStyle}>
         <TouchableOpacity
