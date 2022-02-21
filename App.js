@@ -30,22 +30,18 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <StatusBar
-        //barStyle="dark-content"
-        // hidden={false}
-        translucent={false}
-        backgroundColor="white"
-      />
+      <StatusBar translucent={false} backgroundColor="white" />
       <Stack.Navigator>
         {user ? (
           <>
             <Stack.Screen
               name="Home"
-              component={Home}
               options={{
                 headerShown: false,
               }}
-            />
+            >
+              {props => <Home {...props} extraData={user} />}
+            </Stack.Screen>
             <Stack.Screen name="Create" component={Create} />
             <Stack.Screen name="Update" component={Update} />
           </>

@@ -4,8 +4,11 @@ import Button from "../components/Button";
 import { firebase } from "../firebase/config";
 import { AntDesign } from "@expo/vector-icons";
 
-export default function Home({ navigation }) {
+export default function Home({ navigation, extraData }) {
   const data = [];
+  const userId = extraData.uid;
+  // console.log("userId", userId);
+
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <View style={styles.wrapper}>
@@ -13,7 +16,7 @@ export default function Home({ navigation }) {
           <Text style={styles.title}>My Notes</Text>
           <TouchableOpacity
             activeOpacity={0.7}
-            onPress={() => navigation.navigate("Create")}
+            onPress={() => navigation.navigate("Create", { userId })}
           >
             <AntDesign name="pluscircleo" size={20} color="black" />
           </TouchableOpacity>

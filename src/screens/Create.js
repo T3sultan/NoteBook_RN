@@ -5,16 +5,46 @@ import {
   TextInput,
   TouchableOpacity,
   Image,
+  ActivityIndicator,
 } from "react-native";
 import React, { useState } from "react";
 import Button from "../components/Button";
+import { firebase } from "../firebase/config";
 
-export default function Create() {
+export default function Create({ route, navigation }) {
   const [note, setNote] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const userId = route.params.userId;
+  console.log(userId);
+  const noteRef = firebase.firestore().collection("notes");
 
   const onSave = () => {
     if (note && note.length > 0) {
-      return;
+      //1. loading active
+      setLoading(true);
+      //2.create a timestamp
+      const timestamp = firebase.firestore.FieldValue.serverTimestamp();
+
+      //3.create a data object
+
+      const data = {
+        description: note,
+        author: userId,
+        createdAt: timestamp,
+      };
+
+      //4. save the firebase
+      return noteRef
+        .add(data)
+        .then(_doc => {
+          setNote(null);
+          setLoading(false);
+        })
+        .catch(err => {
+          console.log(err);
+          setLoading(false);
+        });
     }
     return alert("Note is empty");
   };
@@ -31,10 +61,15 @@ export default function Create() {
           onChangeText={text => setNote(text)}
           placeholder="write your notes"
           style={styles.inputStyle}
+          value={note}
         />
-        <TouchableOpacity activeOpacity={0.8} style={styles.buttonStyle}>
-          <Button title="Save" onPress={onSave} />
-        </TouchableOpacity>
+        {loading ? (
+          <ActivityIndicator />
+        ) : (
+          <TouchableOpacity activeOpacity={0.8} style={styles.buttonStyle}>
+            <Button title="Save" onPress={onSave} />
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );
