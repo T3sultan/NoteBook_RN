@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Image,
   FlatList,
+  ScrollView,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import Button from "../components/Button";
@@ -25,7 +26,7 @@ export default function Home({ navigation, extraData }) {
     //our subscribe notes
     const subscriber = noteRef
       // .orderBy("createdAt", "desc")
-      .where("authorId", "==", userId)
+      // .where("authorId", "==", userId)
       .onSnapshot(querySnapShot => {
         // console.log("snap", querySnapShot);
         const newNotes = []; //create new array
@@ -49,13 +50,15 @@ export default function Home({ navigation, extraData }) {
   const renderNote = ({ item, index }) => {
     return (
       <Cards customStyle={{ padding: 20, marginTop: 10 }}>
-        <View style={styles.titleWrapper}>
-          <View style={{ flexDirection: "row" }}>
+        <View style={[styles.titleWrapper, { flex: 1 }]}>
+          <View style={{ flexDirection: "row", flexWrap: "wrap", flex: 1 }}>
             <Text>{`#${index + 1} `}</Text>
             <Text>{item.description}</Text>
           </View>
           <View style={{ flexDirection: "row" }}>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Update", { item })}
+            >
               <Entypo name="edit" size={20} color="black" />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => onDelete(item.id)}>
@@ -115,7 +118,7 @@ export default function Home({ navigation, extraData }) {
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: "white" }}>
+    <ScrollView style={{ flex: 1, backgroundColor: "white" }}>
       <View style={styles.wrapper}>
         <View style={styles.titleWrapper}>
           <Text style={styles.title}>My Notes</Text>
@@ -143,7 +146,7 @@ export default function Home({ navigation, extraData }) {
           />
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 

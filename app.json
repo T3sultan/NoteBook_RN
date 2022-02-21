@@ -2,6 +2,8 @@
   "expo": {
     "name": "Note_RN",
     "slug": "Note_RN",
+    "privacy": "public",
+    "description": "Firebase auth and created note ,note delete & update note",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -13,9 +15,7 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
