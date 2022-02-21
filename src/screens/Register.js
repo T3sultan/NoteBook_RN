@@ -8,6 +8,7 @@ import {
   SafeAreaView,
   StatusBar,
   Alert,
+  ActivityIndicator,
 } from "react-native";
 import React, { useState } from "react";
 import Button from "../components/Button";
@@ -19,6 +20,7 @@ export default function Register({ navigation }) {
   const [password, setPassword] = useState(null);
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [confirmPassword, setConfirmPassword] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const signUpFunction = () => {
     if (!email || !password || !name || !confirmPassword) {
@@ -33,16 +35,33 @@ export default function Register({ navigation }) {
         [{ text: "OK", onPress: () => {} }]
       );
     }
+    setLoading(true);
 
     firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
       .then(response => {
-        console.log("response", response);
+        // console.log("response", response);
+        setLoading(false);
+        // navigation.navigate("Login");
+        //firstly get user id
+        const uid = response.user.uid;
+        //secondly create the user profile data
+        const userProfileDate = {
+          id: uid,
+          email: email,
+          name: name,
+        };
+        //third create user collections
+        const useRef = firebase.firestore().collection("users");
+
+        //fourth save it to database
+        useRef.doc(uid).set(userProfileDate);
       })
       .catch(error => {
         console.log("error", error);
-        Alert(error);
+        setLoading(false);
+        alert(error);
       });
   };
 
@@ -83,19 +102,18 @@ export default function Register({ navigation }) {
           />
         </View>
       </View>
-      <TouchableOpacity activeOpacity={0.9} style={styles.buttonStyle}>
-        <Button onPress={signUpFunction} title="Sign up" />
-      </TouchableOpacity>
 
-      <View
-        style={{
-          flex: 1,
-          justifyContent: "flex-end",
-          marginBottom: 20,
-          alignItems: "center",
-          // backgroundColor: "red",
-        }}
-      >
+      {loading ? (
+        <ActivityIndicator />
+      ) : (
+        <Button
+          onPress={signUpFunction}
+          title="Sign up"
+          backgroundColor="blue"
+        />
+      )}
+
+      <View style={styles.signupStyle}>
         <TouchableOpacity
           activeOpacity={0.8}
           onPress={() => {
@@ -150,5 +168,12 @@ const styles = StyleSheet.create({
   },
   signUp: {
     color: "blue",
+  },
+  signupStyle: {
+    flex: 1,
+    justifyContent: "flex-end",
+    marginBottom: 20,
+    alignItems: "center",
+    // backgroundColor: "red",
   },
 });

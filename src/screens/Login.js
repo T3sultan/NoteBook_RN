@@ -7,17 +7,40 @@ import {
   View,
   SafeAreaView,
   StatusBar,
+  Alert,
+  ActivityIndicator,
 } from "react-native";
 import React, { useState } from "react";
 import Button from "../components/Button";
+import { firebase } from "../firebase/config";
 
 export default function Login({ navigation }) {
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
   const [secureTextEntry, setSecureTextEntry] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const loginFunction = () => {
-    console.log("login");
+    // console.log("login");
+    if (!email || !password) {
+      return Alert.alert("Error", "You need to fill in input form", [
+        { text: "OK", onPress: () => {} },
+      ]);
+    }
+    setLoading(true);
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .then(res => {
+        console.log(res);
+        setLoading(false);
+        navigation.navigate("Home");
+      })
+      .catch(error => {
+        console.log("error", error);
+        setLoading(false);
+        alert(error);
+      });
   };
 
   return (
@@ -45,13 +68,12 @@ export default function Login({ navigation }) {
           />
         </View>
       </View>
-      <TouchableOpacity
-        activeOpacity={0.7}
-        style={styles.buttonStyle}
-        onPress={loginFunction}
-      >
-        <Button title="Login" />
-      </TouchableOpacity>
+
+      {loading ? (
+        <ActivityIndicator />
+      ) : (
+        <Button onPress={loginFunction} backgroundColor="blue" title="Login" />
+      )}
 
       <View
         style={{

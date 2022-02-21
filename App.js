@@ -1,47 +1,61 @@
-import { StatusBar } from 'expo-status-bar';
-import { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Home from './src/screens/Home';
-import Create from './src/screens/Create';
-import Update from './src/screens/Update';
-import Login from './src/screens/Login';
-import Register from './src/screens/Register';
+import { StatusBar } from "expo-status-bar";
+import { useEffect, useState } from "react";
+import { StyleSheet, Text, View } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import Home from "./src/screens/Home";
+import Create from "./src/screens/Create";
+import Update from "./src/screens/Update";
+import Login from "./src/screens/Login";
+import Register from "./src/screens/Register";
+import { firebase } from "./src/firebase/config";
 
 const Stack = createNativeStackNavigator();
 
-
 export default function App() {
+  const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState(null);
+
+  function onAuthStateChanged(user) {
+    setUser(user);
+    setInitializing(false);
+  }
+
+  useEffect(() => {
+    const subscribe = firebase.auth().onAuthStateChanged(onAuthStateChanged);
+    return subscribe;
+  }, []);
+
+  if (initializing) return null;
 
   return (
     <NavigationContainer>
       <StatusBar
         //barStyle="dark-content"
-        // hidden={false}     
+        // hidden={false}
         translucent={false}
-        backgroundColor='white'
+        backgroundColor="white"
       />
       <Stack.Navigator>
-        {user ? <>
-          <Stack.Screen name='Home' component={Home} />
-          <Stack.Screen name='Create' component={Create} />
-          <Stack.Screen name='Update' component={Update} />
-        </> : <>
-          <Stack.Screen
-            name='Login'
-            component={Login}
-            options={{
-              headerShown: false
-            }}
-          />
-          <Stack.Screen name='Register' component={Register} />
-
-        </>}
-
+        {user ? (
+          <>
+            <Stack.Screen name="Home" component={Home} />
+            <Stack.Screen name="Create" component={Create} />
+            <Stack.Screen name="Update" component={Update} />
+          </>
+        ) : (
+          <>
+            <Stack.Screen
+              name="Login"
+              component={Login}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen name="Register" component={Register} />
+          </>
+        )}
       </Stack.Navigator>
-
     </NavigationContainer>
   );
 }
@@ -49,8 +63,8 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
