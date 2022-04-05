@@ -1,5 +1,10 @@
 # NoteBook_RN
 
+#-git clone
+#-then project location
+#-npm install
+# npm start
+
 # Screen Shoots
 <p float="left">
    <img src="https://user-images.githubusercontent.com/60041747/155018203-3be3b9f2-c214-4a80-a4d5-fa5d27ea905e.png" width="200" height="400" />
