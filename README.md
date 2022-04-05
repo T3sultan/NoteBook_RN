@@ -1,8 +1,8 @@
 # NoteBook_RN
 
-#-git clone
-#-then project location
-#-npm install
+# git clone
+# then project location
+# npm install
 # npm start
 
 # Screen Shoots
